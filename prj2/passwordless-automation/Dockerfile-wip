@@ -1,0 +1,39 @@
+FROM ubuntu:latest
+
+RUN apt update
+
+RUN apt install software-properties-common vim  net-tools iputils-ping openssh-server sudo -y
+
+RUN useradd -rm -d /home/ifsadmin -s /bin/bash -g root -G sudo -u 1000 ifsadmin
+
+RUN usermod -aG sudo ifsadmin
+
+RUN service ssh start
+
+RUN apt-add-repository ppa:ansible/ansible
+
+RUN apt install ansible sudo -y
+
+RUN  echo 'ifsadmin:yuTr%64rfR87Hyit%JiB8in' | chpasswd
+
+#Passwordless suthentication
+RUN mkdir -p /home/ifsadmin/.ssh && \
+    chmod 0700 home/ifsadmin/.ssh
+
+COPY id-rsa-ifsadmin /home/ifsadmin/.ssh/id-rsa
+COPY id_rsa.pub-ifsadmin /home/ifsadmin/.ssh/authorized_keys
+
+RUN chown ifsadmin:root /home/ifsadmin/.ssh
+
+RUN chmod 600 /home/ifsadmin/.ssh/id-rsa
+RUN chmod 644 /home/ifsadmin/.ssh/authorized_keys
+
+RUN chown ifsadmin:root /home/ifsadmin/.ssh/*
+
+WORKDIR /home/ifsadmin
+
+
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd","-D"]
+

@@ -1,0 +1,59 @@
+version: '3.0'
+services:
+  ansible_controller:
+    build: .
+    hostname:   ansible_controller
+    container_name: ansible_controller
+    networks:
+        -    ansible_env 
+    stdin_open: true
+    tty: true
+
+  ansible_manage_node1:
+    build: dockerManage/
+    hostname:   ansible_manage_node1
+    container_name: ansible_manage_node1
+    ports:
+        -   "81:80"
+    networks:
+        -    ansible_env 
+    stdin_open: true
+    tty: true
+
+  ansible_manage_node2:
+    build: dockerManage/
+    hostname:   ansible_manage_node2
+    container_name: ansible_manage_node2
+    ports:
+        -   "82:80"
+    networks:
+        -    ansible_env 
+    stdin_open: true
+    tty: true
+ 
+  ansible_manage_node3:
+    build: dockerManage/
+    hostname:   ansible_manage_node3
+    container_name: ansible_manage_node3
+    ports:
+        -   "83:80"
+    networks:
+        -    ansible_env 
+    stdin_open: true
+    tty: true
+
+  ansible_manage_node4:
+    build: dockerManage/
+    hostname:   ansible_manage_node4
+    container_name: ansible_manage_node4
+    ports:
+        -   "84:80"
+    networks:
+        -    ansible_env 
+    stdin_open: true
+    tty: true
+    
+networks:
+    ansible_env:
+        driver: bridge 
+
